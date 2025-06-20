@@ -3,29 +3,30 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # 主分支改成你实际使用的分支
+      - main  # 你的主分支
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install Node.js
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # 按项目要求设定版本
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build project
+      - name: Build
         run: npm run build
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist  # Vue/Vite 默认是 dist，React 是 build
+          publish_dir: ./dist
+          publish_branch: gh-pages
