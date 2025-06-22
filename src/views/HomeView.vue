@@ -383,28 +383,29 @@ const defaultEdgeOptions = {
   <div class="flow-container">
     <div class="toolbar">
       <div class="toolbar-left">
-        <button @click="showNodeSelector = true" class="btn-primary">➕ 添加节点</button>
-        <button @click="showTemplates = true" class="btn-secondary">📋 模板</button>
-        <button @click="deleteSelected">🗑 删除选中</button>
-        <button @click="undo">↩️ 撤销</button>
-        <button @click="redo">↪️ 重做</button>
+        <button @click="showNodeSelector = true" class="btn btn-primary">➕ 添加节点</button>
+        <button @click="showTemplates = true" class="btn btn-secondary">📋 模板</button>
+        <button @click="deleteSelected" class="btn btn-danger">🗑 删除选中</button>
+        <button @click="undo" class="btn btn-secondary">↩️ 撤销</button>
+        <button @click="redo" class="btn btn-secondary">↪️ 重做</button>
       </div>
 
       <div class="toolbar-center">
-        <button @click="startWorkflow" :disabled="!canStartWorkflow" class="btn-success">
+        <button @click="startWorkflow" :disabled="!canStartWorkflow" class="btn btn-success">
           ▶️ 启动工作流
         </button>
-        <button @click="pauseWorkflow" :disabled="!canPauseWorkflow" class="btn-warning">
+        <button @click="pauseWorkflow" :disabled="!canPauseWorkflow" class="btn btn-warning">
           ⏸️ 暂停
         </button>
-        <button @click="resetWorkflow" class="btn-secondary">🔄 重置</button>
+        <button @click="resetWorkflow" class="btn btn-secondary">🔄 重置</button>
       </div>
 
       <div class="toolbar-right">
-        <button @click="saveToJSON">💾 保存</button>
-        <input type="file" @change="loadFromJSON" />
-        <button @click="exportAsImage">🖼️ 导出图片</button>
-        <button @click="layoutFlow">📐 自动布局</button>
+        <button @click="saveToJSON" class="btn btn-secondary">💾 保存</button>
+        <label for="file-upload" class="btn btn-secondary">📁 导入</label>
+        <input id="file-upload" type="file" @change="loadFromJSON" accept=".json" />
+        <button @click="exportAsImage" class="btn btn-secondary">🖼️ 导出图片</button>
+        <button @click="layoutFlow" class="btn btn-secondary">📐 自动布局</button>
       </div>
     </div>
 
@@ -418,14 +419,14 @@ const defaultEdgeOptions = {
     </div>
 
     <VueFlow v-model:nodes="nodes" v-model:edges="edges" :node-types="nodeTypes" :edge-types="edgeTypes"
-      :fit-view-on-init="true" :connection-line-style="{ stroke: '#1890ff', strokeWidth: 2 }"
+      :fit-view-on-init="true" :connection-line-style="{ stroke: '#667eea', strokeWidth: 3 }"
       :connection-line-type="ConnectionLineType.SmoothStep" :default-edge-options="defaultEdgeOptions"
       @connect="handleConnect" @node-click="handleNodeClick" @edge-click="handleEdgeClick" class="vue-flow">
       <!-- 定义箭头标记 -->
       <defs>
         <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6"
           orient="auto-start-reverse">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="#1890ff" />
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#667eea" />
         </marker>
       </defs>
 
@@ -449,23 +450,23 @@ const defaultEdgeOptions = {
       <div class="panel-content">
         <div class="form-group">
           <label>节点名称</label>
-          <input v-model="selectedNode.data.label" type="text" />
+          <input v-model="selectedNode.data.label" type="text" class="input" />
         </div>
         <div class="form-group">
           <label>描述</label>
-          <textarea v-model="selectedNode.data.description"></textarea>
+          <textarea v-model="selectedNode.data.description" class="input"></textarea>
         </div>
         <div v-if="selectedNode.data.type === 'task'" class="form-group">
           <label>负责人</label>
-          <input v-model="selectedNode.data.assignee" type="text" />
+          <input v-model="selectedNode.data.assignee" type="text" class="input" />
         </div>
         <div v-if="selectedNode.data.type === 'task'" class="form-group">
           <label>预计时长</label>
-          <input v-model="selectedNode.data.duration" type="text" />
+          <input v-model="selectedNode.data.duration" type="text" class="input" />
         </div>
         <div v-if="selectedNode.data.type === 'task'" class="form-group">
           <label>状态</label>
-          <select v-model="selectedNode.data.status">
+          <select v-model="selectedNode.data.status" class="input">
             <option value="pending">待处理</option>
             <option value="running">执行中</option>
             <option value="completed">已完成</option>
@@ -474,8 +475,8 @@ const defaultEdgeOptions = {
           </select>
         </div>
         <div class="form-actions">
-          <button @click="updateNode" class="btn-primary">保存</button>
-          <button @click="selectedNode = null" class="btn-secondary">取消</button>
+          <button @click="updateNode" class="btn btn-primary">保存</button>
+          <button @click="selectedNode = null" class="btn btn-secondary">取消</button>
         </div>
       </div>
     </div>
@@ -496,17 +497,36 @@ const defaultEdgeOptions = {
   width: 100vw;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.flow-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+  pointer-events: none;
+  z-index: 0;
 }
 
 .toolbar {
-  padding: 12px 16px;
-  background: #f8f9fa;
-  border-bottom: 1px solid #e9ecef;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .toolbar-left,
@@ -515,81 +535,65 @@ const defaultEdgeOptions = {
   display: flex;
   gap: 8px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
-.btn-primary,
-.btn-secondary,
-.btn-success,
-.btn-warning {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
+.toolbar button {
+  @extend .btn;
+  font-size: 13px;
+  padding: 10px 16px;
+  min-height: 40px;
+  border-radius: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.toolbar input[type="file"] {
+  display: none;
+}
+
+.toolbar input[type="file"] + label {
+  @extend .btn;
+  @extend .btn-secondary;
   cursor: pointer;
-  transition: all 0.2s;
+  margin: 0;
+}
+
+.workflow-info {
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.status-indicator {
+  font-weight: 600;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-.btn-primary {
-  background-color: #1890ff;
-  color: white;
-}
-
-.btn-primary:hover {
-  background-color: #40a9ff;
-}
-
-.btn-secondary {
-  background-color: #f5f5f5;
-  color: #333;
-}
-
-.btn-secondary:hover {
-  background-color: #e8e8e8;
-}
-
-.btn-success {
-  background-color: #52c41a;
-  color: white;
-}
-
-.btn-success:hover {
-  background-color: #73d13d;
-}
-
-.btn-success:disabled {
-  background-color: #d9d9d9;
-  cursor: not-allowed;
-}
-
-.btn-warning {
-  background-color: #faad14;
-  color: white;
-}
-
-.btn-warning:hover {
-  background-color: #ffc53d;
-}
-
-.btn-warning:disabled {
-  background-color: #d9d9d9;
-  cursor: not-allowed;
-}
-
-.workflow-info {
-  padding: 8px 16px;
-  background: #e6f7ff;
-  border-bottom: 1px solid #91d5ff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.status-indicator {
-  font-weight: 500;
-  font-size: 14px;
+.status-indicator::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 2s infinite;
 }
 
 .status-idle {
@@ -613,18 +617,27 @@ const defaultEdgeOptions = {
 }
 
 .progress-info {
-  font-size: 12px;
+  font-size: 13px;
   color: #666;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 6px 12px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
 }
 
 .vue-flow {
   flex: 1;
-  background: #fafafa;
+  background: rgba(250, 250, 250, 0.8);
+  backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 5;
 }
 
 .vue-flow .vue-flow__node.selected {
-  border: 2px solid #ff4d4f;
-  box-shadow: 0 0 10px rgba(255, 77, 79, 0.6);
+  border: 3px solid #667eea;
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+  transform: scale(1.02);
 }
 
 /* 连线样式优化 */
@@ -633,31 +646,36 @@ const defaultEdgeOptions = {
 }
 
 .vue-flow .vue-flow__edge-path {
-  stroke: #1890ff;
-  stroke-width: 2;
-  transition: all 0.2s ease;
+  stroke: #667eea;
+  stroke-width: 3;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
 }
 
 .vue-flow .vue-flow__edge:hover .vue-flow__edge-path {
-  stroke: #40a9ff;
-  stroke-width: 3;
+  stroke: #764ba2;
+  stroke-width: 4;
+  filter: drop-shadow(0 4px 8px rgba(102, 126, 234, 0.5));
 }
 
 .vue-flow .vue-flow__edge.selected .vue-flow__edge-path {
-  stroke: #ff4d4f;
-  stroke-width: 3;
+  stroke: #ff6b6b;
+  stroke-width: 4;
+  filter: drop-shadow(0 4px 8px rgba(255, 107, 107, 0.5));
 }
 
 /* 连接线样式 */
 .vue-flow .vue-flow__connection-line {
-  stroke: #1890ff;
-  stroke-width: 2;
-  stroke-dasharray: 5 5;
+  stroke: #667eea;
+  stroke-width: 3;
+  stroke-dasharray: 8 8;
+  filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
 }
 
 .vue-flow .vue-flow__connection-line:hover {
-  stroke: #40a9ff;
-  stroke-width: 3;
+  stroke: #764ba2;
+  stroke-width: 4;
+  filter: drop-shadow(0 4px 8px rgba(102, 126, 234, 0.5));
 }
 
 .node-panel {
@@ -665,112 +683,312 @@ const defaultEdgeOptions = {
   top: 50%;
   right: 20px;
   transform: translateY(-50%);
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  width: 300px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  width: 320px;
   max-height: 80vh;
   overflow-y: auto;
   z-index: 1000;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: slideIn 0.3s ease-out;
 }
 
 .panel-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
-  border-bottom: 1px solid #eee;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 16px 16px 0 0;
 }
 
 .panel-header h3 {
   margin: 0;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .close-btn {
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 24px;
   cursor: pointer;
   color: #999;
   padding: 0;
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
 }
 
 .close-btn:hover {
-  color: #666;
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+  transform: scale(1.1);
 }
 
 .panel-content {
-  padding: 16px 20px;
+  padding: 24px;
 }
 
 .form-group {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .form-group label {
   display: block;
-  font-size: 12px;
-  font-weight: 500;
-  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
   color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  @extend .input;
   font-size: 14px;
-  box-sizing: border-box;
-}
-
-.form-group textarea {
-  height: 60px;
-  resize: vertical;
+  border-radius: 10px;
+  border: 2px solid rgba(102, 126, 234, 0.2);
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-  outline: none;
-  border-color: #1890ff;
-  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  background: rgba(255, 255, 255, 1);
+}
+
+.form-group textarea {
+  height: 80px;
+  resize: vertical;
+  font-family: inherit;
 }
 
 .form-actions {
   display: flex;
   gap: 12px;
   justify-content: flex-end;
-  margin-top: 20px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.form-actions button {
+  @extend .btn;
+  font-size: 13px;
+  padding: 10px 20px;
+  min-height: 40px;
 }
 
 .context-menu {
   position: fixed;
-  background: white;
-  border: 1px solid #ddd;
-  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 0;
   z-index: 1000;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  animation: fadeIn 0.2s ease-out;
+  min-width: 160px;
 }
 
 .context-menu div {
-  padding: 8px 12px;
+  padding: 12px 16px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  transition: all 0.2s ease;
+  margin: 0 8px;
 }
 
 .context-menu div:hover {
-  background: #f5f5f5;
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  transform: translateX(4px);
+}
+
+/* 移动端响应式优化 */
+@media (max-width: 768px) {
+  .toolbar {
+    padding: 12px 16px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .toolbar-left,
+  .toolbar-center,
+  .toolbar-right {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .toolbar button {
+    font-size: 11px;
+    padding: 8px 12px;
+    min-height: 36px;
+  }
+
+  .workflow-info {
+    padding: 10px 16px;
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+
+  .node-panel {
+    right: 10px;
+    left: 10px;
+    width: auto;
+    max-width: none;
+    transform: translateY(-50%);
+  }
+
+  .panel-content {
+    padding: 16px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .toolbar button {
+    font-size: 10px;
+    padding: 6px 10px;
+    min-height: 32px;
+  }
+
+  .status-indicator {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  .progress-info {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+
+  .node-panel {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    bottom: 10px;
+    transform: none;
+    max-height: none;
+  }
+
+  .panel-header {
+    padding: 16px 20px;
+  }
+
+  .panel-header h3 {
+    font-size: 16px;
+  }
+
+  .panel-content {
+    padding: 16px 20px;
+  }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .flow-container {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  }
+
+  .toolbar {
+    background: rgba(0, 0, 0, 0.8);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .workflow-info {
+    background: rgba(0, 0, 0, 0.8);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .status-indicator {
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+  }
+
+  .progress-info {
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+  }
+
+  .vue-flow {
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  .node-panel {
+    background: rgba(0, 0, 0, 0.9);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .panel-header {
+    background: rgba(0, 0, 0, 0.8);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .panel-header h3 {
+    color: #fff;
+  }
+
+  .form-group label {
+    color: #fff;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .context-menu {
+    background: rgba(0, 0, 0, 0.9);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .context-menu div {
+    color: #fff;
+  }
+
+  .context-menu div:hover {
+    background: rgba(102, 126, 234, 0.2);
+  }
 }
 </style>

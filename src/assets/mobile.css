@@ -1,0 +1,442 @@
+/* 移动端专用样式优化 */
+
+/* 触摸优化 */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 允许文本选择 */
+input, textarea, select {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* 移动端视口优化 */
+@media screen and (max-width: 768px) {
+  /* 工具栏移动端优化 */
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 8px 12px;
+    flex-direction: column;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+  }
+
+  .toolbar-left,
+  .toolbar-center,
+  .toolbar-right {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .toolbar button {
+    font-size: 11px;
+    padding: 8px 12px;
+    min-height: 40px;
+    border-radius: 8px;
+    flex: 1;
+    min-width: 80px;
+    max-width: 120px;
+  }
+
+  /* 工作流信息移动端优化 */
+  .workflow-info {
+    padding: 8px 12px;
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  .status-indicator {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 16px;
+  }
+
+  .progress-info {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 12px;
+  }
+
+  /* 节点面板移动端优化 */
+  .node-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    transform: none;
+    border-radius: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .panel-header {
+    padding: 16px 20px;
+    border-radius: 0;
+    flex-shrink: 0;
+  }
+
+  .panel-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-group label {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    padding: 12px 16px;
+    font-size: 16px; /* 防止iOS缩放 */
+    border-radius: 8px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 20px;
+    padding-top: 16px;
+  }
+
+  .form-actions button {
+    width: 100%;
+    padding: 12px 20px;
+    min-height: 48px;
+    font-size: 14px;
+  }
+
+  /* 右键菜单移动端优化 */
+  .context-menu {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: auto;
+    width: calc(100% - 40px);
+    max-width: 300px;
+    border-radius: 16px;
+    padding: 12px 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  .context-menu div {
+    padding: 16px 20px;
+    font-size: 16px;
+    margin: 0 12px;
+    border-radius: 12px;
+    text-align: center;
+  }
+
+  /* Vue Flow 移动端优化 */
+  .vue-flow {
+    touch-action: pan-x pan-y;
+  }
+
+  .vue-flow .vue-flow__node {
+    touch-action: none;
+  }
+
+  .vue-flow .vue-flow__edge {
+    touch-action: none;
+  }
+
+  /* 节点移动端优化 */
+  .custom-node {
+    padding: 12px;
+    min-width: 140px;
+    max-width: 180px;
+    border-radius: 12px;
+    touch-action: none;
+  }
+
+  .node-header {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .node-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+
+  .node-title {
+    font-size: 14px;
+  }
+
+  .node-status {
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+
+  .node-description {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+
+  .node-assignee,
+  .node-duration {
+    font-size: 10px;
+    margin-bottom: 6px;
+  }
+
+  .decision-options {
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .option {
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+}
+
+/* 小屏幕设备优化 */
+@media screen and (max-width: 480px) {
+  .toolbar {
+    padding: 6px 8px;
+    gap: 4px;
+  }
+
+  .toolbar button {
+    font-size: 10px;
+    padding: 6px 8px;
+    min-height: 36px;
+    min-width: 60px;
+    max-width: 100px;
+  }
+
+  .workflow-info {
+    padding: 6px 8px;
+  }
+
+  .status-indicator {
+    font-size: 11px;
+    padding: 3px 6px;
+  }
+
+  .progress-info {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+
+  .custom-node {
+    padding: 10px;
+    min-width: 120px;
+    max-width: 160px;
+    border-radius: 10px;
+  }
+
+  .node-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+  }
+
+  .node-title {
+    font-size: 13px;
+  }
+
+  .node-status {
+    font-size: 8px;
+    padding: 2px 5px;
+  }
+
+  .panel-header {
+    padding: 12px 16px;
+  }
+
+  .panel-header h3 {
+    font-size: 16px;
+  }
+
+  .panel-content {
+    padding: 16px;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    padding: 10px 14px;
+    font-size: 16px;
+  }
+}
+
+/* 横屏模式优化 */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+  .toolbar {
+    flex-direction: row;
+    padding: 6px 12px;
+    gap: 8px;
+  }
+
+  .toolbar-left,
+  .toolbar-center,
+  .toolbar-right {
+    width: auto;
+    flex: 1;
+  }
+
+  .workflow-info {
+    flex-direction: row;
+    padding: 6px 12px;
+  }
+
+  .node-panel {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    width: auto;
+    height: auto;
+    border-radius: 16px;
+  }
+}
+
+/* 触摸手势优化 */
+@media (hover: none) and (pointer: coarse) {
+  /* 移除悬停效果 */
+  .btn:hover,
+  .custom-node:hover,
+  .option:hover,
+  .context-menu div:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* 添加触摸反馈 */
+  .btn:active,
+  .custom-node:active,
+  .option:active,
+  .context-menu div:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+  }
+
+  /* 增加触摸目标大小 */
+  .btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .close-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .context-menu div {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* 高分辨率屏幕优化 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .custom-node {
+    border-width: 1px;
+  }
+
+  .btn {
+    border-width: 1px;
+  }
+
+  .input {
+    border-width: 1px;
+  }
+}
+
+/* 减少动画以提高性能 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 深色模式移动端优化 */
+@media (prefers-color-scheme: dark) and (max-width: 768px) {
+  .toolbar {
+    background: rgba(0, 0, 0, 0.95);
+  }
+
+  .workflow-info {
+    background: rgba(0, 0, 0, 0.95);
+  }
+
+  .status-indicator {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  .progress-info {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  .context-menu {
+    background: rgba(0, 0, 0, 0.95);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .context-menu div {
+    color: #fff;
+  }
+
+  .context-menu div:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* 安全区域适配 */
+@supports (padding: max(0px)) {
+  .flow-container {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+    padding-top: max(0px, env(safe-area-inset-top));
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+
+  .toolbar {
+    padding-left: max(8px, env(safe-area-inset-left));
+    padding-right: max(8px, env(safe-area-inset-right));
+  }
+
+  .node-panel {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+    padding-top: max(0px, env(safe-area-inset-top));
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+}

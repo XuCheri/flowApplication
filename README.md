@@ -1,39 +1,212 @@
-# 1
+# 工作流系统 - 现代化流程设计工具
 
-This template should help get you started developing with Vue 3 in Vite.
+一个基于 Vue 3 + TypeScript + Vue Flow 的现代化工作流设计和管理系统，专为移动端和桌面端优化。
 
-## Recommended IDE Setup
+## ✨ 主要特性
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+### 🎨 现代化UI设计
 
-## Type Support for `.vue` Imports in TS
+- **渐变背景**: 使用现代化的渐变色彩搭配
+- **毛玻璃效果**: 采用 backdrop-filter 实现毛玻璃视觉效果
+- **圆角设计**: 统一的圆角设计语言
+- **阴影系统**: 多层次阴影营造立体感
+- **动画效果**: 流畅的过渡动画和微交互
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+### 📱 移动端优化
 
-## Customize configuration
+- **响应式设计**: 完美适配各种屏幕尺寸
+- **触摸优化**: 44px 最小触摸目标，防止误触
+- **手势支持**: 支持拖拽、缩放、滑动等手势操作
+- **安全区域适配**: 支持刘海屏、挖孔屏等异形屏
+- **PWA支持**: 可安装为原生应用
+- **离线缓存**: 支持离线使用
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+### 🎯 工作流功能
 
-## Project Setup
+- **多节点类型**: 开始、任务、决策、结束、并行、备注等
+- **智能连线**: 自适应贝塞尔曲线，美观的连接线
+- **拖拽连接**: 拖拽节点自动创建连接
+- **状态管理**: 节点状态可视化（待处理、执行中、已完成等）
+- **撤销重做**: 完整的操作历史记录
+- **导入导出**: 支持 JSON 格式和图片导出
 
-```sh
+### 🛠️ 开发特性
+
+- **TypeScript**: 完整的类型安全
+- **Vue 3 Composition API**: 现代化的 Vue 开发体验
+- **Vite**: 快速的开发构建工具
+- **ESLint**: 代码质量保证
+- **模块化设计**: 清晰的组件架构
+
+## 🚀 快速开始
+
+### 环境要求
+
+- Node.js >= 16.0.0
+- npm >= 8.0.0
+
+### 安装依赖
+
+```bash
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### 启动开发服务器
 
-```sh
+```bash
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### 构建生产版本
 
-```sh
+```bash
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### 代码检查
 
-```sh
+```bash
 npm run lint
 ```
+
+## 📱 移动端特性详解
+
+### 响应式布局
+
+- **768px以下**: 移动端布局，工具栏垂直排列
+- **480px以下**: 小屏设备优化，更紧凑的布局
+- **横屏模式**: 自动适配横屏显示
+
+### 触摸优化
+
+- **触摸目标**: 所有可点击元素最小44px
+- **触摸反馈**: 点击时的缩放动画反馈
+- **防误触**: 禁用文本选择，优化触摸体验
+- **手势识别**: 支持拖拽、缩放等手势
+
+### 性能优化
+
+- **懒加载**: 按需加载组件和资源
+- **动画优化**: 支持 prefers-reduced-motion
+- **高分辨率**: 适配 Retina 等高分辨率屏幕
+- **内存管理**: 优化大工作流的内存使用
+
+### 用户体验
+
+- **加载动画**: 优雅的加载状态显示
+- **错误处理**: 友好的错误提示
+- **操作反馈**: 实时的操作状态反馈
+- **无障碍支持**: 支持屏幕阅读器
+
+## 🎨 设计系统
+
+### 色彩方案
+
+- **主色调**: #667eea (渐变蓝紫)
+- **成功色**: #52c41a (绿色)
+- **警告色**: #faad14 (橙色)
+- **错误色**: #ff4d4f (红色)
+- **中性色**: #666666 (灰色)
+
+### 字体系统
+
+- **主字体**: -apple-system, BlinkMacSystemFont, 'Segoe UI'
+- **中文字体**: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei'
+- **字号层级**: 13px, 14px, 15px, 16px, 18px
+
+### 间距系统
+
+- **基础间距**: 4px, 8px, 12px, 16px, 20px, 24px
+- **圆角半径**: 8px, 12px, 16px, 20px
+- **阴影层级**: 0 2px 8px, 0 4px 16px, 0 8px 32px
+
+## 🔧 技术栈
+
+- **前端框架**: Vue 3.4+
+- **构建工具**: Vite 5.0+
+- **类型系统**: TypeScript 5.0+
+- **流程图库**: Vue Flow 1.0+
+- **样式方案**: CSS3 + 现代特性
+- **包管理**: npm 8.0+
+
+## 📁 项目结构
+
+```
+flowApplication/
+├── public/                 # 静态资源
+│   │   ├── main.css       # 主样式文件
+│   │   ├── mobile.css     # 移动端优化样式
+│   │   └── base.css       # 基础样式
+│   ├── components/        # 组件目录
+│   │   ├── CustomNode.vue # 自定义节点组件
+│   │   ├── CustomEdge.vue # 自定义边组件
+│   │   ├── NodeSelector.vue # 节点选择器
+│   │   └── WorkflowTemplates.vue # 工作流模板
+│   ├── views/             # 页面组件
+│   │   └── HomeView.vue   # 主页面
+│   ├── stores/            # 状态管理
+│   ├── utils/             # 工具函数
+│   └── main.ts            # 应用入口
+├── index.html             # HTML模板
+├── package.json           # 项目配置
+└── README.md              # 项目说明
+```
+
+## 🌟 使用指南
+
+### 创建节点
+
+1. 点击"添加节点"按钮
+2. 选择节点类型（开始、任务、决策等）
+3. 拖拽到画布中
+
+### 连接节点
+
+1. 拖拽节点靠近其他节点
+2. 自动创建连接线
+3. 或使用连接工具手动连接
+
+### 编辑节点
+
+1. 点击节点选中
+2. 在右侧面板编辑属性
+3. 设置状态、负责人等信息
+
+### 工作流控制
+
+1. 点击"启动工作流"开始执行
+2. 实时查看节点状态变化
+3. 支持暂停和重置操作
+
+## 🔮 未来计划
+
+- [ ] 工作流模板市场
+- [ ] 协作编辑功能
+- [ ] 实时同步
+- [ ] 更多节点类型
+- [ ] 工作流分析报告
+- [ ] 移动端原生应用
+
+## 🤝 贡献指南
+
+欢迎提交 Issue 和 Pull Request！
+
+1. Fork 项目
+2. 创建特性分支
+3. 提交更改
+4. 推送到分支
+5. 创建 Pull Request
+
+## 📄 许可证
+
+MIT License
+
+## 🙏 致谢
+
+- [Vue.js](https://vuejs.org/) - 渐进式 JavaScript 框架
+- [Vue Flow](https://vueflow.dev/) - Vue 流程图库
+- [Vite](https://vitejs.dev/) - 下一代前端构建工具
+
+---
+
+**享受现代化的工作流设计体验！** 🎉
