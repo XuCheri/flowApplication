@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, markRaw, onMounted, computed } from 'vue'
-import { VueFlow, useVueFlow, type Node, type Edge, ConnectionLineType } from '@vue-flow/core'
+import { VueFlow, useVueFlow, type Node, type Edge, type Connection, ConnectionLineType } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
@@ -66,7 +66,7 @@ const contextMenuRef = ref<{ x: number; y: number; nodeId: string | null } | nul
 // 计算属性
 const totalNodes = computed(() => nodes.value.length)
 const completedNodes = computed(() =>
-  nodes.value.filter(n => n.data.status === 'completed').length
+  nodes.value.filter(n => n.data?.status === 'completed').length
 )
 
 const canStartWorkflow = computed(() =>
@@ -79,8 +79,8 @@ const canPauseWorkflow = computed(() => workflowStatus.value === 'running')
 const startWorkflow = () => {
   workflowStatus.value = 'running'
   // 找到开始节点并设置为运行状态
-  const startNode = nodes.value.find(n => n.data.type === 'start')
-  if (startNode) {
+  const startNode = nodes.value.find(n => n.data?.type === 'start')
+  if (startNode && startNode.data) {
     startNode.data.status = 'running'
   }
   // 这里可以添加工作流执行逻辑
@@ -93,10 +93,12 @@ const pauseWorkflow = () => {
 const resetWorkflow = () => {
   workflowStatus.value = 'idle'
   nodes.value.forEach(node => {
-    if (node.data.type !== 'start') {
-      node.data.status = 'pending'
-    } else {
-      node.data.status = 'completed'
+    if (node.data) {
+      if (node.data.type !== 'start') {
+        node.data.status = 'pending'
+      } else {
+        node.data.status = 'completed'
+      }
     }
   })
 }
@@ -309,7 +311,10 @@ const handleMenu = (action: string) => {
 }
 
 // 连线时处理
-const handleConnect = ({ source, target, sourceHandle, targetHandle }: { source: string; target: string; sourceHandle?: string; targetHandle?: string }) => {
+const handleConnect = (connection: Connection) => {
+  const { source, target } = connection
+  if (!source || !target) return
+
   const exists = edges.value.some((e) => e.source === source && e.target === target)
   if (!exists) {
     // 创建新的边，使用自定义类型
@@ -330,7 +335,7 @@ const handleConnect = ({ source, target, sourceHandle, targetHandle }: { source:
 }
 
 const getNodeColor = (node: Node) => {
-  const status = (node as Node<WorkflowNodeData>).data.status
+  const status = (node as Node<WorkflowNodeData>).data?.status
   switch (status) {
     case 'completed': return '#52c41a'
     case 'running': return '#1890ff'
@@ -436,7 +441,7 @@ const defaultEdgeOptions = {
     <WorkflowTemplates v-if="showTemplates" @close="showTemplates = false" @select-template="loadTemplate" />
 
     <!-- 节点编辑面板 -->
-    <div v-if="selectedNode" class="node-panel">
+    <div v-if="selectedNode && selectedNode.data" class="node-panel">
       <div class="panel-header">
         <h3>编辑节点</h3>
         <button @click="selectedNode = null" class="close-btn">×</button>

@@ -39,8 +39,8 @@ export class WorkflowEngine {
         this.executionHistory = []
 
         // 找到开始节点
-        const startNode = this.nodes.find(n => n.data.type === 'start')
-        if (!startNode) {
+        const startNode = this.nodes.find(n => n.data?.type === 'start')
+        if (!startNode || !startNode.data) {
             throw new Error('未找到开始节点')
         }
 
@@ -71,7 +71,7 @@ export class WorkflowEngine {
 
         // 找到下一个可执行的节点
         const nextNode = this.findNextNode(this.currentStep.nodeId)
-        if (!nextNode) {
+        if (!nextNode || !nextNode.data) {
             this.isRunning = false
             console.log('工作流执行完成')
             return null
@@ -101,7 +101,7 @@ export class WorkflowEngine {
 
         // 更新节点状态
         const node = this.nodes.find(n => n.id === this.currentStep!.nodeId)
-        if (node) {
+        if (node && node.data) {
             node.data.status = 'completed'
         }
     }
@@ -115,7 +115,7 @@ export class WorkflowEngine {
 
         // 更新节点状态
         const node = this.nodes.find(n => n.id === this.currentStep!.nodeId)
-        if (node) {
+        if (node && node.data) {
             node.data.status = 'skipped'
         }
     }
@@ -130,7 +130,7 @@ export class WorkflowEngine {
 
         // 更新节点状态
         const node = this.nodes.find(n => n.id === this.currentStep!.nodeId)
-        if (node) {
+        if (node && node.data) {
             node.data.status = 'failed'
         }
     }
@@ -157,7 +157,7 @@ export class WorkflowEngine {
     // 处理决策节点
     private handleDecisionNode(nodeId: string, edges: Edge[]): Node<WorkflowNodeData> | null {
         const decisionNode = this.nodes.find(n => n.id === nodeId)
-        if (!decisionNode || decisionNode.data.type !== 'decision') {
+        if (!decisionNode || !decisionNode.data || decisionNode.data.type !== 'decision') {
             // 如果不是决策节点，选择第一个出口
             const nextNode = this.nodes.find(n => n.id === edges[0].target)
             return nextNode || null
@@ -175,7 +175,7 @@ export class WorkflowEngine {
         if (this.currentStep) {
             this.currentStep.status = 'pending'
             const node = this.nodes.find(n => n.id === this.currentStep!.nodeId)
-            if (node) {
+            if (node && node.data) {
                 node.data.status = 'pending'
             }
         }
@@ -187,7 +187,7 @@ export class WorkflowEngine {
         if (this.currentStep) {
             this.currentStep.status = 'running'
             const node = this.nodes.find(n => n.id === this.currentStep!.nodeId)
-            if (node) {
+            if (node && node.data) {
                 node.data.status = 'running'
             }
         }
@@ -201,10 +201,12 @@ export class WorkflowEngine {
 
         // 重置所有节点状态
         this.nodes.forEach(node => {
-            if (node.data.type === 'start') {
-                node.data.status = 'completed'
-            } else {
-                node.data.status = 'pending'
+            if (node.data) {
+                if (node.data.type === 'start') {
+                    node.data.status = 'completed'
+                } else {
+                    node.data.status = 'pending'
+                }
             }
         })
     }
@@ -231,18 +233,18 @@ export class WorkflowEngine {
 
     // 检查工作流是否完成
     isCompleted(): boolean {
-        const endNodes = this.nodes.filter(n => n.data.type === 'end')
-        return endNodes.some(n => n.data.status === 'completed')
+        const endNodes = this.nodes.filter(n => n.data?.type === 'end')
+        return endNodes.some(n => n.data?.status === 'completed')
     }
 
     // 获取工作流统计信息
     getStatistics() {
         const total = this.nodes.length
-        const completed = this.nodes.filter(n => n.data.status === 'completed').length
-        const running = this.nodes.filter(n => n.data.status === 'running').length
-        const failed = this.nodes.filter(n => n.data.status === 'failed').length
-        const skipped = this.nodes.filter(n => n.data.status === 'skipped').length
-        const pending = this.nodes.filter(n => n.data.status === 'pending').length
+        const completed = this.nodes.filter(n => n.data?.status === 'completed').length
+        const running = this.nodes.filter(n => n.data?.status === 'running').length
+        const failed = this.nodes.filter(n => n.data?.status === 'failed').length
+        const skipped = this.nodes.filter(n => n.data?.status === 'skipped').length
+        const pending = this.nodes.filter(n => n.data?.status === 'pending').length
 
         return {
             total,
